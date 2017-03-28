@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            float: left;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+        #duuu233 {
+            position: fixed;
+            bottom: 50%;
+            right: 0px;
+            padding: 10px;
+            font-size: 20px;
+            color: #0099cc;
+        }
+        #duuu233:hover {
+            background-color: red;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <!--(.box>img[src="images/P_00$.jpg"])*9-->
+    <div class="box"><img src="images/P_000.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_001.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_002.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_003.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_004.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_005.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_006.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_007.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_008.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_009.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_010.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_011.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_012.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_013.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_014.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_015.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_016.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_017.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_018.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_019.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_010.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_011.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_012.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_013.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_014.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_015.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_016.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_017.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_018.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_019.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_010.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_011.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_012.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_013.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_014.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_015.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_016.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_017.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_018.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_019.jpg" alt=""/></div>
+
+</div>
+<a href="https://duuu233.github.io/duuu_demo/list.html" id='duuu233'>返回目录</a>
+<script>
+
+    window.onload = function () {
+        var container = document.getElementById("container")
+        var boxes = container.children;
+        var pageWidth = document.body.clientWidth;//获取屏幕的宽度；
+//        console.log(pageWidth);
+        var boxWidth = boxes[2].offsetWidth//  获取每个小盒子宽度
+//        console.log(boxWidth);
+        var column = Math.floor(pageWidth / boxWidth);  //计算一行可以放多少图片  而且要取整数
+//        console.log(column);
+        //创一个新数组  保存每一个盒子的高度并找出最小值和最小值的索引
+        var arrHeight = [];
+        //，遍历所以盒子，开始排第一列的盒子，直到i遍历到了放不下盒子,然后对剩下的进行处理
+        cc();
+        function cc() {
+            for (var i = 0; i < boxes.length; i++) {
+                if (i < column) {
+                    arrHeight[i] = boxes[i].offsetHeight;//第一行能放入的盒子，并记录他们的高度
+                } else {                  //剩下的盒子根据上面记录过的盒子的高度
+                    var minHeight = getMin(arrHeight).value;       //找盒子顶部到屏幕顶部距离最小的那个，也就是offsetHeight最小的，
+                    var minHeightIndex = getMin(arrHeight).index;
+                    boxes[i].style.position = "absolute"              //记得加定位 加单位
+                    boxes[i].style.top = minHeight + "px";               //并找出最小盒子对应的索引，索引是为了计算左右位移距离的
+                    boxes[i].style.left = boxes[minHeightIndex].offsetLeft + "px";     // 把下一个循环出来的盒子放到这个最小的盒子下面，
+                    arrHeight[minHeightIndex] = minHeight + boxes[i].offsetHeight;           //盒子加上去了，这列的高度就变化了，就不是最小的，把它加上去，方便后面的遍历
+                }
+            }
+            //判断是否触底了核心思路：屏幕内的最后一个盒子到屏幕顶部的高度（即offetTop）
+            //是否大于等于窗口的高度+被卷的高度，要是等于说明已经到底部了，大于就会看到空白
+            //所以等于的时候就要放入新的图片进行加载了
+            // 这里要用到滚动事件  还要求出各个对应的值
+            //（最后那个盒子距离网页最上面的高度、窗口的高度、被卷去的高度）
+            window.onscroll = function () {
+                var clientHeight = window.innerHeight;//窗口的高度
+                var scrollTop = window.pageYOffset; //被卷去的高度
+                var lastBox = boxes[boxes.length - 1]; //最后一个盒子
+                var lastBOxTop = lastBox.offsetTop;
+                if (lastBOxTop < scrollTop + clientHeight) {
+//                    alert("触底咯")
+                    var json = [
+                        {"src": "images/P_000.jpg"},
+                        {"src": "images/P_001.jpg"},
+                        {"src": "images/P_002.jpg"},
+                        {"src": "images/P_003.jpg"},
+                        {"src": "images/P_004.jpg"},
+                        {"src": "images/P_005.jpg"},
+                        {"src": "images/P_006.jpg"},
+                        {"src": "images/P_007.jpg"},
+                        {"src": "images/P_008.jpg"},
+                        {"src": "images/P_009.jpg"},
+                    ];
+                    for (var i = 0; i < json.length; i++) {
+                        var div = document.createElement("div");
+                        div.className = "box";
+                        container.appendChild(div);
+                        var img = document.createElement("img");
+                        img.src = json[i].src;
+                        div.appendChild(img);
+                        cc();
+                    }
+                } else {
+//                    console.log(("没触底"));
+                }
+            }
+        }
+    }
+
+
+    //    var arr = [4, 5, 3, 2, 1]
+    //    console.log(getMin(arr));
+    function getMin(arr) {
+        var min = {}
+        min.index = 0//假设法
+        min.value = arr[min.index];
+        for (var i = 0; i < arr.length; i++) {
+            if (min.value > arr[i]) {
+                min.value = arr[i]
+                min.index = i;
+            }
+        }
+        return min
+    }
+</script>
+</body>
+
+</html>

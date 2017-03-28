@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        ul {
+            list-style: none
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            width: 1150px;
+            height: 400px;
+            margin: 50px auto;
+            border: 1px solid red;
+            overflow: hidden;
+            /*background: #fff url() 0 0 no-repeat;*/
+        }
+
+        div li {
+            width: 240px;
+            height: 400px;
+            float: left;
+        }
+
+        div ul {
+            width: 1300px;
+        }
+        #duuu233 {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            padding: 10px;
+            font-size: 20px;
+            color: #0099cc;
+        }
+        #duuu233:hover {
+            background-color: red;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<a href="https://duuu233.github.io/duuu_demo/list.html" id='duuu233'>返回目录</a>
+<script>
+    var box = document.getElementById("box");
+    var ul = box.children[0];
+    var lis = ul.children;
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].style.backgroundImage = "url(images/" + (i + 1) + ".jpg)"
+        lis[i].onmouseover = function () {
+            for (var j = 0; j < lis.length; j++) {
+                animate(lis[j], {"width": 100})
+            }
+            animate(this, {"width": 800})
+        }
+        lis[i].onmouseout = function () {
+            for (var i = 0; i < lis.length; i++) {
+                animate(lis[i], {"width": 240})
+            }
+        }
+    }
+    function animate(obj, json, fn) {  //json{attr:target} 属性名:属性值 k:json[k]
+        clearInterval(obj.timer);
+        obj.timer = setInterval(function () {
+            var cc = true;
+            for (var k in json) {
+                if (k === "opacity") { //opacity没有单位 参与运算自动转换成数值 所以不用parsetInt
+                    var leader = getStyle(obj, k) * 100;
+                    var target = json[k] * 100; //取值范围 0-1 0.1 0.33 33 为了让以前的计算公式生效 要扩大100倍
+                    var step = (target - leader) / 10;
+                    step = step > 0 ? Math.ceil(step) : Math.floor(step);
+                    leader = leader + step;
+                    obj.style[k] = leader / 100;
+                } else if (k === "zIndex") {
+                    obj.style.zIndex = json[k];
+                } else {
+                    var leader = parseInt(getStyle(obj, k)) || 0;//万一传入auto 最后左边会为NAN 此时传入0
+                    var target = json[k];
+                    var step = (target - leader) / 10;
+                    step = step > 0 ? Math.ceil(step) : Math.floor(step);
+                    leader = leader + step;
+                    obj.style[k] = leader + "px";
+                }
+                if (leader != target) {
+                    cc = false;
+                }
+            }
+            if (cc) {
+                clearInterval(obj.timer);
+                if (fn) {     //要是不判断，执行完了会再调用这个函数，要是没输入函数，就找不到，会报错
+                    fn();   //放在这里是要让上一个定时器内的执行完，先清理上次一的定时器，在执行
+                }           //判断第一次代码执行完后，还有函数就执行，没有不会调用这个函数，F12不会报错
+            }
+        }, 15);
+    }
+    function getStyle(obj, attr) {
+        if (window.getComputedStyle(obj)) {
+            return window.getComputedStyle(obj)[attr];
+        } else {
+            return obj.currentStyle[attr];
+        }
+    }
+</script>
+</body>
+</html>

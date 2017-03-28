@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav {
+            height: 30px;
+            background: #036663;
+            border-bottom: 1px solid #369;
+            line-height: 30px;
+            padding-left: 30px;
+        }
+
+        .nav a {
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            text-decoration: none;
+
+        }
+
+        .d-box {
+            width: 400px;
+            height: 300px;
+            border: 5px solid #eee;
+            box-shadow: 2px 2px 2px 2px #666;
+            position: absolute;
+            top: 40%;
+            left: 40%;
+        }
+
+        .hd {
+            width: 100%;
+            height: 25px;
+            background-color: #7c9299;
+            border-bottom: 1px solid #369;
+            line-height: 25px;
+            color: white;
+            cursor: move;
+        }
+
+        #box_close {
+            float: right;
+            cursor: pointer;
+        }
+        #duuu233 {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            padding: 10px;
+            font-size: 20px;
+            color: #0099cc;
+        }
+        #duuu233:hover {
+            background-color: red;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+<div class="nav">
+    <a href="javascript:;" id="register">注册信息</a>
+</div>
+<div class="d-box" id="d_box">
+    <div class="hd" id="drop">注册信息 (可以拖拽)
+        <span id="box_close">【关闭】</span>
+    </div>
+    <div class="bd"></div>
+</div>
+<a href="https://duuu233.github.io/duuu_demo/list.html" id='duuu233'>返回目录</a>
+<script>
+    var d_box = document.getElementById("d_box");
+    var drop = document.getElementById("drop");
+    drop.onmousedown = function (event) {
+        var event = event || window.event;
+        var pageX = event.pageX || event.clientX + document.documentElement.scrollLeft;
+        var pageY = event.pageY || event.clientX + document.documentElement.scrollTop;
+        //鼠标在盒子中的坐标
+        var boxX = pageX - d_box.offsetLeft;
+        var boxY = pageY - d_box.offsetTop;
+        document.onmousemove = function (event) {
+            var event = event || window.event;
+            var pageX = event.pageX || event.clientX + document.documentElement.scrollLeft;
+            var pageY = event.pageY || event.clientX + document.documentElement.scrollTop;
+            d_box.style.left = pageX - boxX + "px";
+            d_box.style.top = pageY - boxY + "px";
+        }
+    }
+    document.onmouseup = function () {
+        document.onmousemove = null;
+    }
+    var d_box = document.getElementById("d_box");
+    var drop = document.getElementById("drop");
+
+</script>
+</body>
+</html>
